@@ -11,12 +11,6 @@ namespace MainMenu
         List<string>? _menu_elements = new List<string>()
             { "HomeWork XX : [{work_name}]",
               "Task_1: ",
-              "Task_2: ",
-              "Task_3: ",
-              "Task_4: ",
-              "Task_5: ",
-              "Task_6: ",
-              "Task_7: "
             };
 
         public void AddElement(string menu_element) { _menu_elements.Add(menu_element); }
@@ -44,13 +38,6 @@ namespace MainMenu
             }
 
             else if (choice == 1) IDA_C_sh_HomeWork.Program.Task_1(_menu_elements[1]);
-            else if (choice == 2) IDA_C_sh_HomeWork.Program.Task_2(_menu_elements[2]);
-            else if (choice == 3) IDA_C_sh_HomeWork.Program.Task_3(_menu_elements[3]);
-            else if (choice == 4) IDA_C_sh_HomeWork.Program.Task_4(_menu_elements[4]);
-            else if (choice == 5) IDA_C_sh_HomeWork.Program.Task_5(_menu_elements[5]);
-            else if (choice == 6) IDA_C_sh_HomeWork.Program.Task_6(_menu_elements[6]);
-            else if (choice == 7) IDA_C_sh_HomeWork.Program.Task_7(_menu_elements[7]);
-            //else if (choice == 8) IDA_C_sh_HomeWork_1.Program.Task_8(_menu_elements[8]);
 
 
             else { Console.Write("\nSuch choice does not exist yet\n"); Thread.Sleep(1000); }
