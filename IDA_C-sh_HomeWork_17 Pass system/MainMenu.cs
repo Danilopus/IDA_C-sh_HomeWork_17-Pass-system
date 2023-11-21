@@ -9,8 +9,8 @@ namespace MainMenu
     internal class MainMenu
     {
         List<string>? _menu_elements = new List<string>()
-            { "HomeWork XX : [{work_name}]",
-              "Task_1: ",
+            { "HomeWork 17 : [Pass System]",
+              "Task_1: Pass System demo",
             };
 
         public void AddElement(string menu_element) { _menu_elements.Add(menu_element); }
