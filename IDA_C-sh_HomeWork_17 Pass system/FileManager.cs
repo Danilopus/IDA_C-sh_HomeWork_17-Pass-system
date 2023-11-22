@@ -22,7 +22,7 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
             {
                 //JsonSerializerOptions options = new JsonSerializerOptions() { WriteIndented = true };
                 // writer.WriteLine(JsonSerializer.Serialize(valueEvent, options));
-                writer.WriteLine(valueEvent.ToString());
+                writer.WriteLine(valueEvent.ToString());        
             }
         return true;
         }

@@ -95,6 +95,36 @@ namespace IDA_C_sh_HomeWork
                 passSystem.IssuePass(employee);
             }
 
+            // Также добавим в колектив несколько нарушителей:
+            // Незарегистрированных в системе, но с пропусками
+            for (int i = 0; i < 3; i++)
+            {
+                Employee employee = new Employee();
+                employee.FirstName = "intruder";
+                employee.Position = "Director";
+                passSystem.IssuePass(employee);
+                employees_team.Add(employee);
+            }
+            // Незарегистрированных в системе и не имеющих пропусков
+            for (int i = 0; i < 3; i++)
+            {
+                Employee employee = new Employee();
+                employee.FirstName = "intruder";
+                employee.Position = "Head";
+                employees_team.Add(employee);
+            }
+            // Зарегистрированных в системе, но не имеющих пропусков
+            for (int i = 0; i < 3; i++)
+            {
+                Employee employee = new Employee();
+                employee.FirstName = "intruder";
+                employee.Position = "Head";
+                passSystem.RegisterEmployee(employee);
+                employees_team.Add(employee);
+            }
+
+
+
             // Инфорация о сотрудниках и выданных пропусках
             Console.WriteLine("\n\n// Инфорация о сотрудниках и выданных пропусках:\n");
             foreach (Employee employee in employees_team)
@@ -103,16 +133,7 @@ namespace IDA_C_sh_HomeWork
                 else Console.WriteLine($"{employee} ".PadLeft(30) + $"| Position: {employee.Position} | Pass: {employee.Pass.PrintInfo()}");
             }
 
-            // Также добавим в колектив несколько нарушителей:
-            for (int i = 0; i < 5; i++)
-            {
-                Employee employee = new Employee();
-                employee.FirstName = "intruder";
-                employee.Position = "Director";
-                passSystem.IssuePass(employee);
-                Employee employee2 = new Employee();
-                employees_team.Add(employee);
-            }
+ 
 
             // создадим кипучую деятельность на 10 секунд     
             PassSystemWorkSimulation();
@@ -120,14 +141,13 @@ namespace IDA_C_sh_HomeWork
             // Получение списка сотрудников с постоянным пропуском.
             Console.Write("\n\n*** Получение списка сотрудников с постоянным пропуском\n\n ... press any key\r");
             Console.ReadKey();
-            foreach (Employee employee in employees_team.Where(s => s.Pass.PassType == "PermanentPass"))
+            foreach (Employee employee in employees_team.Where(s => s.Pass != null).Where(s => s.Pass.PassType == "PermanentPass"))
                 Console.WriteLine($"{employee} |".PadLeft(30) + $" Pass type: {employee.Pass.PassType}");
-
 
             // Получение списка сотрудников с временным пропуском, чье действие истекает сегодня.
             Console.Write("\n\n*** Получение списка сотрудников с временным пропуском, чье действие истекает {0}\n\n ... press any key\r", DateTime.Now.Date.AddDays(1));
             Console.ReadKey();
-            foreach (Employee employee in employees_team.Where(s => s.Pass.PassType == "TemporaryPass").Where(s => (s.Pass as TemporaryPass).PassExpritationDate < DateTime.Now.Date.AddDays(1)))
+            foreach (Employee employee in employees_team.Where(s => s.Pass != null).Where(s => s.Pass.PassType == "TemporaryPass").Where(s => (s.Pass as TemporaryPass).PassExpritationDate < DateTime.Now.Date.AddDays(1)))
                         Console.WriteLine($"{employee} |".PadLeft(30) + employee.Pass.PrintInfo());
 
             // Логи            
