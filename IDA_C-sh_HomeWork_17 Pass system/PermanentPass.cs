@@ -15,11 +15,15 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
 
         /////   PROPS   /////
 
-        IPass.PassType passType = IPass.PassType.PermanentPass;
+        IPass.PassTypeEnum passType = IPass.PassTypeEnum.PermanentPass;
         private static int ID_counter = 1;
         public int PermanentPassID{ private set; get; }
-
-        public string PassType { get; private set; } = "PermanentPass";
+        string _passtype = "PermanentPass";
+        public string PassType
+        {
+            get { return _passtype; }
+            set { }
+        }               
 
         /////   METHODS   /////
 
@@ -28,9 +32,9 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
             return PassType == "PermanentPass";
         }
 
-        public void PrintInfo()
+        public string PrintInfo()
         {
-            Console.WriteLine($"{this} exp.date: none");
+            return $"{this} exp.date: none";
         }
         public override string ToString()
         {

@@ -32,6 +32,11 @@ namespace PassSystemEventLogger
         public string EmploeeName { private set; get; }
         public string Pass { private set; get; } = "no pass";
 
+        /////   METHODS   /////
 
+       /* public override string ToString()
+        {
+           // return $"Action {Action}";
+        }*/
     }
 }

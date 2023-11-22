@@ -15,5 +15,9 @@ namespace PassSystemEventLogger
             LogEvents.Add(new ValueEvent(method_name, employee, result));
             return LogEvents[LogEvents.Count - 1];
         }
+        static public List<string> ReadLogFile(string fileName) 
+        {
+        return FileManager.ReadLogFile(fileName);
+        }
     }
 }

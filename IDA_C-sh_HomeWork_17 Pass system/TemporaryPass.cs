@@ -17,10 +17,17 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
         }
 
         /////   PROPS   /////
-        IPass.PassType passType = IPass.PassType.TemporaryPass;
+        
+        IPass.PassTypeEnum passType = IPass.PassTypeEnum.TemporaryPass;
         private static int ID_counter = 1;
         public int TemporaryPassID { private set; get; }
-        public string PassType { get; private set; } = "TemporaryPass";
+        string _passtype = "TemporaryPass";
+        public string PassType
+        {
+            get { return _passtype; }
+            set { }
+        }
+
         public DateTime PassExpritationDate { get; private set; }
 
         /////   METHODS   /////
@@ -30,9 +37,9 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
                 return PassExpritationDate > DateTime.Now;
         }
 
-        public void PrintInfo()
+        public string PrintInfo()
         {
-            Console.WriteLine($"{this} exp.date: {PassExpritationDate}");
+            return $"{this} exp.date: {PassExpritationDate}";
         }
         public override string ToString()
         {

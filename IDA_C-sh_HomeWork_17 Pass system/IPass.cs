@@ -8,8 +8,9 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
 {
     internal interface IPass
     {
-        enum PassType { PermanentPass , TemporaryPass }
+        enum PassTypeEnum { PermanentPass , TemporaryPass }
+        string PassType { get; set; }
         bool Validate(); //- проверка валидности пропуска
-        void PrintInfo(); //- отображение информации о пропуске
+        string PrintInfo(); //- отображение информации о пропуске
     }
 }

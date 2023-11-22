@@ -22,7 +22,7 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
         
 
 
-        bool RegisterEmployee(Employee new_employee) //- регистрация нового сотрудника
+        public bool RegisterEmployee(Employee new_employee) //- регистрация нового сотрудника
         {
             if (new_employee == null)
             {
@@ -33,19 +33,27 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
             VulueEvent_event(Logger.EventInfoGenerate(GetCallerName(), new_employee, true));
             return true;
         }
-        bool IssuePass(Employee employee, IPass.PassType passType, DateTime? expitarion_date = null) //- выдача пропуска сотруднику
+        public bool IssuePass(Employee employee, DateTime? expitarion_date = null) //- выдача пропуска сотруднику
         {
             if (employee == null) throw new Exception("Null Employee reference");
-            switch (passType)
+            //switch (passType)
+            switch (employee.Position)
             {
-                case IPass.PassType.PermanentPass:
+                case "Head": case "Director":
                     PermanentPass tmp_obj = new PermanentPass();
                     pass_list.Add(tmp_obj);
                     employee.PassAcquire(tmp_obj);
                     break;
-                case IPass.PassType.TemporaryPass:
-                    if (expitarion_date == null) return false;
-                    TemporaryPass tmp_obj_2 = new TemporaryPass(Convert.ToDateTime(expitarion_date));
+                case "Ordinary":
+                    TemporaryPass tmp_obj_2;
+                    if (expitarion_date == null)
+                    {
+                        tmp_obj_2 = new TemporaryPass(DateTime.Now.AddSeconds(5));
+                    }
+                    else
+                    {
+                        tmp_obj_2 = new TemporaryPass(Convert.ToDateTime(expitarion_date));
+                    }
                     pass_list.Add(tmp_obj_2);
                     employee.PassAcquire(tmp_obj_2);
                     break;
@@ -53,17 +61,23 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
                     VulueEvent_event(Logger.EventInfoGenerate(GetCallerName(), employee, false));
                     return false;
             }
+            // comment = employee.ToString + " get " + employee.Pass.ToString();
             VulueEvent_event(Logger.EventInfoGenerate(GetCallerName(), employee, true));
             return true;
         }
         public bool AccessControl(Employee employee, out string comment)
+        //- проверка доступа сотрудника с помощью пропуска
         {
             if (employee == null) { comment = "No employee"; return false; }
-            if (employee.Pass == null)  { comment = "No pass"; return false; }
-            if (!employees_list.Contains(employee)) { comment = "employee not registred"; return false; }
+            if (employee.Pass == null)  { comment = $" {employee} has no pass"; return false; }
+            if (!employees_list.Contains(employee)) { comment = $"{employee} not registred"; return false; }
+            if (!pass_list.Contains(employee.Pass)) { comment = $"{employee.Pass} not registred"; return false; }
             VulueEvent_event(Logger.EventInfoGenerate(GetCallerName(), employee, employee.Pass.Validate()));
-            comment = employee.ToString + " get " + employee.Pass.ToString();
-            return employee.Pass.Validate(); }    //- проверка доступа сотрудника с помощью пропуска
+            //comment = employee.ToString() + " access permitted with " + employee.Pass.ToString();
+            bool validate = employee.Pass.Validate();
+            if (validate) { comment = $"{employee} |".PadLeft(30) + $"access permitted with {employee.Pass}"; return true; }
+            else { comment = $"{employee} | ".PadLeft(30) + $" access denied with {employee.Pass.PrintInfo()}"; return false; }
+        }
 
         public void PrintEmployeeList() { foreach (Employee employee in employees_list) Console.WriteLine(employee); }  //- отображение списка зарегистрированных сотрудников           
 

@@ -1,6 +1,7 @@
 ﻿// HomeWork template 1.4 // date: 17.10.2023
 
 using IDA_C_sh_HomeWork_17_Pass_system;
+using PassSystemEventLogger;
 using Service;
 using System;
 using System.Linq.Expressions;
@@ -82,19 +83,88 @@ namespace IDA_C_sh_HomeWork
         {
             Console.WriteLine("\n***\t{0}\n\n", work_name);
 
-            // Создадим эко-систему из 100 сотрудников
-            Employee[] employees_teeam = new Employee[100];
+            // Создадим эко-систему из 20 сотрудников
+            Employee[] employees_team = Employee.CreateEmployeeTeam(20);
 
-            foreach (Employee employee in employees_teeam)
-                Console.WriteLine(employee);
+            // Зарегистрируем и раздадим всем пропуска
+            PassSystem passSystem = new PassSystem();
+            foreach (Employee employee in employees_team)
+            {
+                passSystem.RegisterEmployee(employee);
+                // по умолчанию временные пропуска на 5 секунд
+                passSystem.IssuePass(employee);
+            }
+
+            // Инфорация о сотрудниках и выданных пропусках
+            foreach (Employee employee in employees_team)
+            {
+                if (employee.Pass == null) Console.WriteLine($"{employee} | Position: {employee.Position} | Pass: null");
+                else Console.WriteLine($"{employee} ".PadLeft(30) + $"| Position: {employee.Position} | Pass: {employee.Pass.PrintInfo()}");
+            }
+                     
+            
+            // создадим кипучую деятельность на 10 секунд     
+            PassSystemWorkSimulation();
+
+
+            // Получение списка сотрудников с постоянным пропуском.
+            Console.Write("\n\n*** Получение списка сотрудников с постоянным пропуском\n\n ... press any key\r");
+            Console.ReadKey();
+            foreach (Employee employee in employees_team.Where(s => s.Pass.PassType == "PermanentPass"))
+                Console.WriteLine($"{employee} |".PadLeft(30) + $" Pass type: {employee.Pass.PassType}");
+
+
+            // Получение списка сотрудников с временным пропуском, чье действие истекает сегодня.
+            Console.Write("\n\n*** Получение списка сотрудников с временным пропуском, чье действие истекает {0}\n\n ... press any key\r", DateTime.Now.Date.AddDays(1));
+            Console.ReadKey();
+            foreach (Employee employee in employees_team.Where(s => s.Pass.PassType == "TemporaryPass").Where(s => (s.Pass as TemporaryPass).PassExpritationDate < DateTime.Now.Date.AddDays(1)))
+                        Console.WriteLine($"{employee} |".PadLeft(30) + employee.Pass.PrintInfo());
+
+            // Логи            
+            Console.Write("\n\n--- Хотите взглянуть на журнал событий текущей сессии?\nСобытий в журнале текущей сессии: {0}\n\n ... press Y if Yes, or any other key if No\r", Logger.LogEvents.Count);
+            
+            if (Console.ReadKey().Key == ConsoleKey.Y)
+            {
+                foreach (var logevent in Logger.LogEvents)
+                    Console.WriteLine(logevent);
+            }
 
 
 
 
+            ///// LOCAL FUNCTIONS /////
 
+            void PassSystemWorkSimulation(int simulation_time_sec = 10)
+            {
+                string comment;
+                Random rand = new Random();
+                DateTime start = DateTime.Now;
 
+                Console.Write("\n\nTo start simulation ... press any key");
+                Console.ReadKey();
+                Console.Write("\r");
+
+                Console.WriteLine("*** Simulation start time: " + start + "\n");
+                int attempts = 0, success_attemps = 0;
+                while (start.AddSeconds(simulation_time_sec) > DateTime.Now)
+                {
+                    attempts++;
+                    Thread.Sleep(300);
+                    Employee employee = employees_team[rand.Next(employees_team.Length)];
+                    if (passSystem.AccessControl(employee, out comment)) { success_attemps++; }
+                    Console.WriteLine(" AccessControl comment: " + comment);
+                }
+
+                Console.WriteLine("\n*** Simulation stop time: " + DateTime.Now + 
+                    "\tDuration " + string.Format("{0:f2}", (DateTime.Now - start).TotalSeconds) + " sec" +
+                    "\n*** AccessControl attempts: " + attempts +
+                    ", successful " + success_attemps +
+                    ", denied " + (attempts-success_attemps));
+
+                Console.WriteLine($"\n*** Logged events: {Logger.LogEvents.Count}");
+            }
         }
-
+ 
 
     }// class Program
 }// namespace
