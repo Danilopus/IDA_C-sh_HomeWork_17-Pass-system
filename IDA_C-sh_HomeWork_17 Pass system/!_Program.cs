@@ -84,11 +84,11 @@ namespace IDA_C_sh_HomeWork
             Console.WriteLine("\n***\t{0}\n\n", work_name);
 
             // Создадим эко-систему из 20 сотрудников
-            Employee[] employees_team = Employee.CreateEmployeeTeam(20);
+            var employees_team = Employee.CreateEmployeeTeam(20).ToList();
 
             PassSystem passSystem = new PassSystem();
             // Настроим систему пропусков так, чтобы все значимые события логировались в файл
-            // Для этого подключаем в делегат-событие VulueEvent_event метод FileManager.WriteToLogFile
+            // Для этого подключаем в делегат-событие VulueEvent_event метод Logger.WriteEventToLogFile
             Logger.LogFileName = passSystem.LogFileName;
             passSystem.VulueEvent_event += Logger.WriteEventToLogFile;
 
@@ -106,8 +106,19 @@ namespace IDA_C_sh_HomeWork
             {
                 if (employee.Pass == null) Console.WriteLine($"{employee} | Position: {employee.Position} | Pass: null");
                 else Console.WriteLine($"{employee} ".PadLeft(30) + $"| Position: {employee.Position} | Pass: {employee.Pass.PrintInfo()}");
-            }                     
-            
+            }
+
+            // Также добавим в колектив несколько нарушителей:
+            for (int i = 0; i < 5; i++)
+            {
+                Employee employee = new Employee();
+                employee.FirstName = "intruder";
+                employee.Position = "Director";
+                passSystem.IssuePass(employee);
+                Employee employee2 = new Employee();
+                employees_team.Add(employee);
+            }
+
             // создадим кипучую деятельность на 10 секунд     
             PassSystemWorkSimulation();
 
@@ -158,7 +169,7 @@ namespace IDA_C_sh_HomeWork
                 {
                     attempts++;
                     Thread.Sleep(300);
-                    Employee employee = employees_team[rand.Next(employees_team.Length)];
+                    Employee employee = employees_team[rand.Next(employees_team.Count)];
                     if (passSystem.AccessControl(employee, out comment)) { success_attemps++; }
                     Console.WriteLine(" AccessControl comment: " + comment);
                 }

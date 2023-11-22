@@ -68,7 +68,7 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
         {
             if (employee == null) { comment = "No employee"; return false; }
             if (employee.Pass == null)  { comment = $" {employee} has no pass"; return false; }
-            if (!employees_list.Contains(employee)) { comment = $"{employee} not registred"; return false; }
+            if (!employees_list.Contains(employee)) { comment = $"{employee} | ".PadLeft(30) + "not registred"; return false; }
             if (!pass_list.Contains(employee.Pass)) { comment = $"{employee.Pass} not registred"; return false; }
             VulueEvent_event(Logger.EventInfoGenerate(GetCallerName(), employee, employee.Pass.Validate()));
             //comment = employee.ToString() + " access permitted with " + employee.Pass.ToString();
