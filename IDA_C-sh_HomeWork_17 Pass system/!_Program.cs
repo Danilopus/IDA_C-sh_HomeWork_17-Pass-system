@@ -7,11 +7,6 @@ using System;
 using System.Linq.Expressions;
 using System.Text;
 
-/// QUESTIONS ///
-/// 1. 
-
-// UNDER CONSTRUCTION
-
 // HomeWork 17 : [Pass System] --------------------------------
 
 namespace IDA_C_sh_HomeWork
