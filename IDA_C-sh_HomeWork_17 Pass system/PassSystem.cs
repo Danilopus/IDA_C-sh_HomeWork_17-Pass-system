@@ -20,8 +20,6 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
 
         /////   METHODS   /////
         
-
-
         public bool RegisterEmployee(Employee new_employee) //- регистрация нового сотрудника
         {
             if (new_employee == null)

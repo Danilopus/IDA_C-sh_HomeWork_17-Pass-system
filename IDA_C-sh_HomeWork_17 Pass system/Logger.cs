@@ -7,9 +7,20 @@ using System.Threading.Tasks;
 
 namespace PassSystemEventLogger
 {
-    internal class Logger
+    internal static class Logger
     {
+        /////   PROPS   /////
+
+        static public string LogFileName { set; get; } = "PassSystemJournal.log";
         static internal readonly List<ValueEvent> LogEvents = new List<ValueEvent>();
+
+        /////   METHODS   /////
+        
+        static public void WriteEventToLogFile(ValueEvent valueEvent) 
+        {
+            FileManager.WriteToLogFile(valueEvent, LogFileName);
+        }
+
         static public ValueEvent EventInfoGenerate(string method_name, Employee employee, bool result)
         {
             LogEvents.Add(new ValueEvent(method_name, employee, result));

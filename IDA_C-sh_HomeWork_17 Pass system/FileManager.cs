@@ -1,4 +1,5 @@
-﻿using Service;
+﻿using PassSystemEventLogger;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,28 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
            if (valueEvent == null) return false;
             using (StreamWriter writer = new StreamWriter(filename, true))  
             {
-                JsonSerializerOptions options = new JsonSerializerOptions()
-                { WriteIndented = true };
-                writer.WriteLine(JsonSerializer.Serialize(valueEvent, options));
+                //JsonSerializerOptions options = new JsonSerializerOptions() { WriteIndented = true };
+                // writer.WriteLine(JsonSerializer.Serialize(valueEvent, options));
+                writer.WriteLine(valueEvent.ToString());
             }                        
         return true;
         }
+        static public List<string> ReadLogFile(string filename)
+        {
+            List<string> tmp_list = new List<string>();
+            using (StreamReader reader = new StreamReader(filename, true))
+            {
+                while (!reader.EndOfStream)
+                {
+                //tmp_list.Add(JsonSerializer.Deserialize<ValueEvent>(reader.ReadToEnd()));
+                //tmp_list = (JsonSerializer.Deserialize<List<ValueEvent>>(reader.ReadToEnd()));
+                tmp_list.Add(reader.ReadLine());
+                }
+            }
+            return tmp_list;
+        }
+
+
         static public void RandomNameSurnameLoader(out string[] male_surnames, out string[] male_names, out string[] femmale_names)
         {            
             // "male_surnames_rus.txt";

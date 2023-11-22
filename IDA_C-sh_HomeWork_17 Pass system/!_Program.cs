@@ -86,8 +86,13 @@ namespace IDA_C_sh_HomeWork
             // Создадим эко-систему из 20 сотрудников
             Employee[] employees_team = Employee.CreateEmployeeTeam(20);
 
-            // Зарегистрируем и раздадим всем пропуска
             PassSystem passSystem = new PassSystem();
+            // Настроим систему пропусков так, чтобы все значимые события логировались в файл
+            // Для этого подключаем в делегат-событие VulueEvent_event метод FileManager.WriteToLogFile
+            Logger.LogFileName = passSystem.LogFileName;
+            passSystem.VulueEvent_event += Logger.WriteEventToLogFile;
+
+            // Зарегистрируем и раздадим всем пропуска
             foreach (Employee employee in employees_team)
             {
                 passSystem.RegisterEmployee(employee);
@@ -96,6 +101,7 @@ namespace IDA_C_sh_HomeWork
             }
 
             // Инфорация о сотрудниках и выданных пропусках
+            Console.WriteLine("\n\n// Инфорация о сотрудниках и выданных пропусках:\n");
             foreach (Employee employee in employees_team)
             {
                 if (employee.Pass == null) Console.WriteLine($"{employee} | Position: {employee.Position} | Pass: null");
@@ -130,7 +136,14 @@ namespace IDA_C_sh_HomeWork
             }
 
 
+            Console.Write("\n\n--- Хотите взглянуть на журнал событий всех сессий {1}?\nСобытий в журнале всех сессий: {0}\n\n ... press Y if Yes, or any other key if No\r", Logger.ReadLogFile(passSystem.LogFileName).Count, passSystem.LogFileName);
+            if (Console.ReadKey().Key == ConsoleKey.Y)
+            {
+                foreach (var logevent in Logger.ReadLogFile(passSystem.LogFileName))
+                    Console.WriteLine(logevent);
+            }
 
+            Console.WriteLine("\n\nEnd of work ... press any key");
 
             ///// LOCAL FUNCTIONS /////
 
@@ -138,12 +151,11 @@ namespace IDA_C_sh_HomeWork
             {
                 string comment;
                 Random rand = new Random();
-                DateTime start = DateTime.Now;
 
                 Console.Write("\n\nTo start simulation ... press any key");
                 Console.ReadKey();
                 Console.Write("\r");
-
+                DateTime start = DateTime.Now;
                 Console.WriteLine("*** Simulation start time: " + start + "\n");
                 int attempts = 0, success_attemps = 0;
                 while (start.AddSeconds(simulation_time_sec) > DateTime.Now)

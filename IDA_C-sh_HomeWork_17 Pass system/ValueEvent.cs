@@ -31,12 +31,14 @@ namespace PassSystemEventLogger
         public bool OperationResult { private set; get; }
         public string EmploeeName { private set; get; }
         public string Pass { private set; get; } = "no pass";
+         public DateTime DateTimeStamp { private set; get; } = DateTime.Now;
 
         /////   METHODS   /////
 
-       /* public override string ToString()
+        public override string ToString()
         {
-           // return $"Action {Action}";
-        }*/
+            return $"Event_{ValueEventID}: Operation {Operation} at {DateTimeStamp} result: {OperationResult}" +
+                $" Actor: {EmploeeName} Pass: {Pass}" ;
+        }
     }
 }
