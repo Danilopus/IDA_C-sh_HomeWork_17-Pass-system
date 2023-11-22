@@ -106,12 +106,10 @@ namespace IDA_C_sh_HomeWork
             {
                 if (employee.Pass == null) Console.WriteLine($"{employee} | Position: {employee.Position} | Pass: null");
                 else Console.WriteLine($"{employee} ".PadLeft(30) + $"| Position: {employee.Position} | Pass: {employee.Pass.PrintInfo()}");
-            }
-                     
+            }                     
             
             // создадим кипучую деятельность на 10 секунд     
             PassSystemWorkSimulation();
-
 
             // Получение списка сотрудников с постоянным пропуском.
             Console.Write("\n\n*** Получение списка сотрудников с постоянным пропуском\n\n ... press any key\r");
@@ -127,14 +125,12 @@ namespace IDA_C_sh_HomeWork
                         Console.WriteLine($"{employee} |".PadLeft(30) + employee.Pass.PrintInfo());
 
             // Логи            
-            Console.Write("\n\n--- Хотите взглянуть на журнал событий текущей сессии?\nСобытий в журнале текущей сессии: {0}\n\n ... press Y if Yes, or any other key if No\r", Logger.LogEvents.Count);
-            
+            Console.Write("\n\n--- Хотите взглянуть на журнал событий текущей сессии?\nСобытий в журнале текущей сессии: {0}\n\n ... press Y if Yes, or any other key if No\r", Logger.LogEvents.Count);            
             if (Console.ReadKey().Key == ConsoleKey.Y)
             {
                 foreach (var logevent in Logger.LogEvents)
                     Console.WriteLine(logevent);
             }
-
 
             Console.Write("\n\n--- Хотите взглянуть на журнал событий всех сессий {1}?\nСобытий в журнале всех сессий: {0}\n\n ... press Y if Yes, or any other key if No\r", Logger.ReadLogFile(passSystem.LogFileName).Count, passSystem.LogFileName);
             if (Console.ReadKey().Key == ConsoleKey.Y)

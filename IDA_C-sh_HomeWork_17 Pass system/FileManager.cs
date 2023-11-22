@@ -23,7 +23,7 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
                 //JsonSerializerOptions options = new JsonSerializerOptions() { WriteIndented = true };
                 // writer.WriteLine(JsonSerializer.Serialize(valueEvent, options));
                 writer.WriteLine(valueEvent.ToString());
-            }                        
+            }
         return true;
         }
         static public List<string> ReadLogFile(string filename)
@@ -54,6 +54,12 @@ namespace IDA_C_sh_HomeWork_17_Pass_system
         }
         static string[] GetItems(string file)
         {
+            if (!File.Exists(file))
+            {
+                string project_path = Directory.GetParent(file).Parent.Parent.Parent.FullName + "\\";
+                if (!File.Exists(project_path+file)) throw new Exception("couldnt find " + file);
+                File.Copy(project_path + file, file, true);
+            }
             using (StreamReader streamReader = new StreamReader(file))
             {
                 return streamReader.ReadToEnd().Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
